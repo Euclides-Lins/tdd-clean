@@ -3,14 +3,12 @@ import { MissimParamError } from '../errors/missing-params'
 import { badRequest } from '../helpers/https-helper'
 export class SignUpController {
   handle (httpRequest: HttpRequest): HttpResponse {
-    if (!httpRequest.body.name) {
-      return badRequest(new MissimParamError('name'))
+    const requiredFields = ['name', 'email']
+    for (const field of requiredFields) {
+      if (!httpRequest.body[field]) {
+        return badRequest(new MissimParamError(field))
+      }
     }
-
-    if (!httpRequest.body.email) {
-      return badRequest(new MissimParamError('email'))
-    }
-
     return badRequest(new MissimParamError('name'))
   }
 }
